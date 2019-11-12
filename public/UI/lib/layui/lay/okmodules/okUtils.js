@@ -9,7 +9,7 @@ layui.define(["layer"], function (exprots) {
         /**
          * 服务器地址
          */
-        baseUrl: "http://rap2api.taobao.org/app/mock/233041",
+        baseUrl: "http://www.siamlove.com/SiamProjectManage/public/index.php",
         /**
          * 获取body的总宽度
          */
@@ -52,7 +52,7 @@ layui.define(["layer"], function (exprots) {
                     }
                 },
                 success: function (data) {
-                    if (data.code == 0) {
+                    if (data.code == 200) {
                         // 业务正常
                         deferred.resolve(data)
                     } else {
