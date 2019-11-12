@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>编辑角色</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/oksub.css">
+</head>
+<body>
+    <div class="ok-body">
+        <!--form表单-->
+        <form class="layui-form ok-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入角色名" autocomplete="off" class="layui-input" lay-verify="required">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <input type="text" name="remarks" placeholder="请输入备注" autocomplete="off" class="layui-input" lay-verify="required">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限</label>
+                <div class="layui-input-block">
+                    <!-- TODO -->
+                    <div id="authTree"></div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="edit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--js逻辑-->
+    <script src="../../lib/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: ''
+        }).extend({
+            authtree: 'authtree',
+        });
+
+        layui.use(['element', 'form', 'jquery'], function () {
+            var element = layui.element;
+            var form = layui.form;
+            var $ = layui.jquery;
+
+            form.on('submit(edit)', function (data) {
+                console.log(data.field);
+                layer.msg("编辑成功！", {icon: 6, time: 1000, anim: 4}, function () {
+                    parent.layer.close(parent.layer.getFrameIndex(window.name));
+                });
+                return false;
+            });
+        })
+    </script>
+</body>
+</html>
