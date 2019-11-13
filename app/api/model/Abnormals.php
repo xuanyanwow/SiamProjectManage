@@ -2,7 +2,21 @@
 namespace app\api\model;
 
 
+use app\api\bean\AbnormalBean;
 use think\Model;
+
+/**
+ * 异常表
+ * @property $ab_id
+ * @property $project_id 所属项目id
+ * @property $ab_class
+ * @property $ab_date 日期 用来索引统计数量
+ * @property $ab_data 数据 如get post head cookie等
+ * @property $ab_fileresources 文件资源 如果有的话
+ * @property $ab_message 异常消息
+ * @property $create_time 创建时间
+ * @property $update_time 更新时间
+ */
 
 class Abnormals extends Model
 {
@@ -89,5 +103,17 @@ class Abnormals extends Model
             }
         }
         return $return;
+    }
+
+    /**
+     * 上报
+     * @param AbnormalBean $bean
+     * @return Abnormals
+     */
+    public static function report(AbnormalBean $bean)
+    {
+        $abnormal = new static();
+        $abnormal->save($bean->toArray());
+        return $abnormal;
     }
 }

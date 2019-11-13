@@ -6,7 +6,7 @@ layui.define(["layer"], function (exprots) {
             /**
              * 服务器基础地址
              */
-            url:'http://www.siam.com/public/index.php',
+            url:'http://www.siamlove.com/SiamProjectManage/public/index.php',
             /**
              * 是否前后分离
              */
