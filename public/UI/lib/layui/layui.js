@@ -42,6 +42,7 @@ if (!Object.assign) {
         "okBarcode": "okmodules/okBarcode",
         "okNprogress": "okmodules/okNprogress",
         "okSweetAlert2": "okmodules/okSweetAlert2",
+        "siamConfig": "okmodules/siamConfig",
     };
     var modulePath = Object.assign({
         layer: "modules/layer",

@@ -11,10 +11,12 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab'], function () {
     var id   = getUrlParam("id");
     var name = decodeURI(getUrlParam("name"));
 
-    $("#project-title").html("项目详情 - " + name);
-    $("#chooseApi").attr('href', `projectApi.html?id=${id}&name=${name}`);
-    $("#chooseException").attr('href', `projectException.html?id=${id}&name=${name}`);
+    $("#project-title").html("API统计 - " + name);
+
+    let backUrl = `projectDetail.html?id=${id}&name=${name}`;
+
+    $("#backBtn").click(function(){
+        window.location.href = backUrl;
+        return false;
+    })
 });
-
-
-

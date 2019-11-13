@@ -1,6 +1,7 @@
 "use strict";
-layui.define(["layer"], function (exprots) {
+layui.define(["layer", "siamConfig"], function (exprots) {
     var $ = layui.jquery;
+    var siamConfig = layui.siamConfig;
     var okUtils = {
         /**
          * 是否前后端分离
@@ -9,7 +10,7 @@ layui.define(["layer"], function (exprots) {
         /**
          * 服务器地址
          */
-        baseUrl: "http://www.siamlove.com/SiamProjectManage/public/index.php",
+        baseUrl: "http://www.siam.com/public/index.php",
         /**
          * 获取body的总宽度
          */
@@ -41,8 +42,10 @@ layui.define(["layer"], function (exprots) {
         ajax: function (url, type, params, load) {
             var deferred = $.Deferred();
             var loadIndex;
+            let BaseUrl = siamConfig.config("url");
+            let isFrontendBackendSeparate = siamConfig.config("isFrontendBackendSeparate");
             $.ajax({
-                url: okUtils.isFrontendBackendSeparate ? okUtils.baseUrl + url : url,
+                url: isFrontendBackendSeparate ? BaseUrl + url : url,
                 type: type || "get",
                 data: params || {},
                 dataType: "json",
@@ -161,3 +164,10 @@ layui.define(["layer"], function (exprots) {
     };
     exprots("okUtils", okUtils);
 });
+
+
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return decodeURI(r[2]); return null;
+}
