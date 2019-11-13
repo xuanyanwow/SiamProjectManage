@@ -48,7 +48,7 @@ layui.define(["layer", "siamConfig"], function (exprots) {
                 url: isFrontendBackendSeparate ? BaseUrl + url : url,
                 type: type || "get",
                 data: params || {},
-                dataType: "json",
+                // dataType: "json",
                 beforeSend: function () {
                     if (load) {
                         loadIndex = layer.load(0, {shade: 0.3});

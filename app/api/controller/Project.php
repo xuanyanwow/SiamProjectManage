@@ -24,4 +24,21 @@ class Project
             'msg'  => 'success'
         ]);
     }
+
+    public function delete_one()
+    {
+        $id = input('project_id');
+
+        if (!$id){
+            return json(['code' => 400]);
+        }
+
+        $project = Projects::deleteById($id);
+
+        return json([
+            'code' => 200,
+            'data' => $project,
+            'msg'  => 'success'
+        ]);
+    }
 }

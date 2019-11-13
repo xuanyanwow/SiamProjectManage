@@ -6,6 +6,7 @@ use think\Model;
 class Projects extends Model
 {
     protected $autoWriteTimestamp = 'datetime';
+    protected $pk = 'project_id';
 
     public static function get_list()
     {
@@ -23,5 +24,16 @@ class Projects extends Model
         $project = new static();
         $project->save($data);
         return $project;
+    }
+
+    public static function deleteById($id)
+    {
+        $project = static::find($id);
+
+        if (!$project){
+            return false;
+        }
+
+        return $project->delete();
     }
 }

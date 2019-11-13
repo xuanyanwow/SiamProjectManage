@@ -31,37 +31,44 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'layer'], function 
         });
     }
 
-    $("#list-bd").on("click", ".project-one", function(){
-        let id   = $(this).data("id");
+    $("#list-bd").on("click", ".project-one", function () {
+        let id = $(this).data("id");
         let name = $(this).data("name");
         let temName = encodeURI(name);
-        let url  = `pages/projectDetail.html?id=${id}&name=${name}`;
+        let url = `pages/projectDetail.html?id=${id}&name=${name}`;
         let page = `<div lay-id="project_${id}" data-url="${url}"><cite>[项目] ${name} </cite></div>`;
         okTab.tabAdd(page);
     })
 
-    $("#list-bd").on("click", ".project-delete", function(){
-        alert("删除" + $(this).data('id'));
-        event.stopPropagation();
+    $("#list-bd").on("click", ".project-delete", function () {
+        okUtils.ajax("/api/project/delete_one", "post", {
+            project_id: $(this).data('id'),
+        }, true).done(function (response) {
+            layer.msg('删除成功');
+            location.reload();
+        }).fail(function (error) {
+            console.log(error);
+        });
+        layer.close(index);
         return false; // 终止冒泡
     })
 
-    $("#projectAdd").on('click', function(){
+    $("#projectAdd").on('click', function () {
         layer.prompt({
             formType: 3,
             value: '',
             title: '请输入新项目名',
             area: ['200px', '150px'] //自定义文本域宽高
-          }, function(value, index, elem){
+        }, function (value, index, elem) {
             okUtils.ajax("/api/project/add", "post", {
-                project_name :value,
+                project_name: value,
             }, true).done(function (response) {
                 location.reload();
             }).fail(function (error) {
                 console.log(error);
             });
             layer.close(index);
-          });
+        });
     });
 
 
