@@ -8,10 +8,16 @@ class Projects extends Model
     protected $autoWriteTimestamp = 'datetime';
     protected $pk = 'project_id';
 
+    /**
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public static function get_list()
     {
-        $list  = static::select();
-        $count = static::count("project_id");
+        $list  = (new Projects)->select();
+        $count = (new Projects)->count("project_id");
 
         return [
             'list'  => $list,
@@ -26,9 +32,14 @@ class Projects extends Model
         return $project;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     * @throws
+     */
     public static function deleteById($id)
     {
-        $project = static::find($id);
+        $project = (new Projects)->find($id);
 
         if (!$project){
             return false;

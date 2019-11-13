@@ -23,36 +23,64 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfi
     });
 
 
-    var userSourceOption = {
-        "title": {"text": ""},
-        "tooltip": {"trigger": "axis", "axisPointer": {"type": "cross", "label": {"backgroundColor": "#6a7985"}}},
-        "toolbox": {"feature": {"saveAsImage": {}}},
-        "grid": {"left": "3%", "right": "4%", "bottom": "3%", "containLabel": true},
-        "xAxis": [{"type": "category", "boundaryGap": false, "data": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]}],
-        "yAxis": [{"type": "value"}],
-        "series": [
-            {"name": "Payment", "type": "line", "stack": "总量", "areaStyle": {}, "data": [0,0,1,8,0,0,1]},
-        ]
-    };
+    function getChartData()
+    {
+
+        okUtils.ajax("/api/abnormal/get_static", "post", {
+            project_id : id
+        }, true).done(function (response) {
+            console.log(response);
+
+            let column = [];
+            let data = [];
+
+            $.each(response.data , function(index, item){
+                column.push(item.ab_date);
+                data.push(item.count);
+            });
+
+            var staticSource = {
+                "title": {"text": ""},
+                "tooltip": {"trigger": "axis", "axisPointer": {"type": "cross", "label": {"backgroundColor": "#6a7985"}}},
+                "toolbox": {"feature": {"saveAsImage": {}}},
+                "grid": {"left": "3%", "right": "4%", "bottom": "3%", "containLabel": true},
+                "xAxis": [{"type": "category", "boundaryGap": false, "data": column}],
+                "yAxis": [{"type": "value"}],
+                "series": [
+                    {"name": "Payment", "type": "line", "stack": "总量", "areaStyle": {}, "data": data},
+                ]
+            };
+
+            showChart(staticSource);
+        }).fail(function (error) {
+            console.log(error);
+        });
+
+
+    }
 
     /**
      * 渲染图表
      */
-    function showChart() {
-        var userSourceMap = echarts.init($("#exceptionChart")[0], "theme");
-        userSourceMap.setOption(userSourceOption);
-        okUtils.echartsResize([userSourceMap]);
+    function showChart(staticSource) {
+
+        var staticChart = echarts.init($("#exceptionChart")[0], "theme");
+        staticChart.setOption(staticSource);
+        okUtils.echartsResize([staticChart]);
     }
 
     /**
      * 列表
      */
     function initList() {
-        let url = siamConfig.config('url') + "/api/exception/get_list";
+        let url = siamConfig.config('url') + "/api/abnormal/get_list";
         table.render({
             elem: '#lists'
             , height: 312
             , url: url //数据接口
+            , where:{
+                project_id : id
+            }
             , page: true //开启分页
             , cols: [[ //表头
                 { field: 'ab_id', title: 'ID', width: 80, fixed: 'left' }
@@ -77,6 +105,6 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfi
             }
         });
     }
-    showChart();
+    getChartData();
     initList();
 });

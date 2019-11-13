@@ -5,6 +5,10 @@ use app\api\model\Projects;
 
 class Project
 {
+    /**
+     * @return \think\response\Json
+     * @throws
+     */
     public function get_list()
     {
         $data = Projects::get_list();
