@@ -30,7 +30,7 @@ class Abnormals extends Model
         }else{
             $where = [];
         }
-        $list  = (new static)->where($where)->page($page, $limit)->field('ab_id, project_id, ab_class, ab_date, ab_message, create_time')->select();
+        $list  = (new static)->where($where)->page($page, $limit)->field('ab_id, project_id, ab_class, ab_date, ab_message, create_time')->order("ab_id", 'DESC')->select();
         $count = (new static)->where($where)->count("ab_id");
 
         return [

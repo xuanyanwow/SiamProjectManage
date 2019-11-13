@@ -64,6 +64,9 @@ class Abnormal extends BaseController
      * 异常上报
      * 测试地址 : {{api}}/api/abnormal/report
      * post   : project_id=10&ab_class=TestExceptionClass&ab_date=2019-11-13&ab_message=测试异常消息
+     * 可选   :
+     * $ab_data 数据 json字符串 {"get":{}, "post":{}, "head":{} }...
+     * $ab_fileresources 文件资源 json字符串 [{"is_hight":0, "text": "代码", "line" :100}, {"is_hight":1, "text": "代码2", "line" :101}]
      * @return \think\response\Json
      * @throws
      */
