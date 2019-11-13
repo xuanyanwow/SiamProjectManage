@@ -15,25 +15,39 @@
     <script type="text/javascript" src="../lib/echarts/world/js/china.js"></script>
     <link rel="stylesheet" href="../css/oksub.css" media="all" />
     <style>
-    .project-one{
-        cursor: pointer;
-    }
+        .project-one {
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body class="ok-body-scroll console">
     <div class="ok-body home">
         <div class="layui-row" style="padding:15px">
-            <h1>项目管理</h1>
+            <h1>项目新增</h1>
             <br>
             <div id="manager-bd">
-                <div class="layui-btn layui-btn-normal layui-btn-sm" id="projectAdd">
-                    添加
-                </div>
+                <a class="layui-btn layui-btn-normal layui-btn-sm" href='project.html'>
+                    返回
+                </a>
             </div>
         </div>
         <div class="layui-row layui-col-space15" style="padding:15px;" id="list-bd">
-            
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">项目名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required" placeholder="请输入标题"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
     </div>
@@ -41,4 +55,5 @@
 
 </html>
 <script type="text/javascript" src="../lib/layui/layui.js"></script>
-<script type="text/javascript" src="../js/project.js"></script>
+
+<script type="text/javascript" src="../js/projectAdd.js"></script>

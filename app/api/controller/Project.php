@@ -1,24 +1,26 @@
 <?php
 namespace app\api\controller;
 
+use app\api\model\Projects;
+
 class Project
 {
     public function get_list()
     {
-        $list = [
-            [
-                'id' => 1,
-                'name' => 'Payment'
-            ],[
-                'id' => 2,
-                'name' => '娃娃机'
-            ],
-        ];
+        $data = Projects::get_list();
         return json([
             'code' => 200,
-            'data' => [
-                'list' => $list
-            ],
+            'data' => $data,
+            'msg'  => 'success'
+        ]);
+    }
+
+    public function add()
+    {
+        $project = Projects::add(input());
+        return json([
+            'code' => 200,
+            'data' => $project,
             'msg'  => 'success'
         ]);
     }

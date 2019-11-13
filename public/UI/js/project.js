@@ -1,11 +1,12 @@
 "use strict";
-layui.use(["okUtils", "table", "countUp", "okMock", 'okTab'], function () {
+layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'layer'], function () {
     var countUp = layui.countUp;
     var table = layui.table;
     var okUtils = layui.okUtils;
     var okMock = layui.okMock;
     var $ = layui.jquery;
     var okTab = layui.okTab();
+    var layer = layui.layer;
 
     function renderList() {
         okUtils.ajax("/api/project/get_list", "get", null, true).done(function (response) {
@@ -14,10 +15,10 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab'], function () {
                 let html = `
                     <div class="layui-col-xs6 layui-col-md3">
                         <div class="layui-card">
-                            <div class="ok-card-body project-one" data-id="${item.id}" data-name="${item.name}">
+                            <div class="ok-card-body project-one" data-id="${item.project_id}" data-name="${item.project_name}">
                                 <div class="stat-heading">
-                                    ${item.name}
-                                    <span style="display:inline-block;float:right;" class="project-delete" data-id="${item.id}" >删除</span>
+                                    ${item.project_name}
+                                    <span style="display:inline-block;float:right;" class="project-delete" data-id="${item.project_id}" >删除</span>
                                 </div>
                             </div>
                         </div>
@@ -44,6 +45,24 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab'], function () {
         event.stopPropagation();
         return false; // 终止冒泡
     })
+
+    $("#projectAdd").on('click', function(){
+        layer.prompt({
+            formType: 3,
+            value: '',
+            title: '请输入新项目名',
+            area: ['200px', '150px'] //自定义文本域宽高
+          }, function(value, index, elem){
+            okUtils.ajax("/api/project/add", "post", {
+                project_name :value,
+            }, true).done(function (response) {
+                location.reload();
+            }).fail(function (error) {
+                console.log(error);
+            });
+            layer.close(index);
+          });
+    });
 
 
     renderList();
