@@ -42,6 +42,10 @@ class Abnormals extends Model
     public static function getDetailById($id)
     {
         $abnormal = (new static)->find($id);
+
+        $abnormal['ab_fileresources'] = !$abnormal['ab_fileresources'] ? [] : json_decode($abnormal['ab_fileresources'], true);
+        $abnormal['ab_data']          = !$abnormal['ab_data'] ? [] : json_decode($abnormal['ab_data'], true);
+
         return $abnormal;
     }
 

@@ -18,7 +18,10 @@ class AbnormalBean extends SplBean
     protected $ab_class;
     protected $ab_date;
     protected $ab_data = "{}";
-    protected $ab_fileresources;
+    protected $ab_file;
+    protected $ab_line;
+    protected $ab_stack = "[]";
+    protected $ab_fileresources = "[]";
     protected $ab_message;
     protected $create_time;
     protected $update_time;
@@ -167,6 +170,52 @@ class AbnormalBean extends SplBean
         $this->update_time = $update_time;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAbFile()
+    {
+        return $this->ab_file;
+    }
 
+    /**
+     * @param mixed $ab_file
+     */
+    public function setAbFile($ab_file): void
+    {
+        $this->ab_file = $ab_file;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAbLine()
+    {
+        return $this->ab_line;
+    }
+
+    /**
+     * @param mixed $ab_line
+     */
+    public function setAbLine($ab_line): void
+    {
+        $this->ab_line = $ab_line;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAbStack()
+    {
+        return $this->ab_stack;
+    }
+
+    /**
+     * @param mixed $ab_stack
+     */
+    public function setAbStack($ab_stack): void
+    {
+        $this->ab_stack = $ab_stack;
+    }
 
 }

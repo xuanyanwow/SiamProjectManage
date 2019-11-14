@@ -1,5 +1,5 @@
 "use strict";
-layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfig'], function () {
+layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfig', 'okLayer'], function () {
     var countUp = layui.countUp;
     var table = layui.table;
     var okUtils = layui.okUtils;
@@ -8,6 +8,7 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfi
     var okTab = layui.okTab();
     var table = layui.table;
     var siamConfig = layui.siamConfig;
+    var okLayer = layui.okLayer;
 
 
     var id = getUrlParam("id");
@@ -105,6 +106,20 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfi
             }
         });
     }
+
+    // 行事件
+
+    table.on("tool(lists)", function(obj){
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+        okLayer.open("异常详情", "projectExceptionDetail.html", "80%", "80%", function(layero){
+        }, function(){
+
+        });
+    });
+
     getChartData();
     initList();
 });

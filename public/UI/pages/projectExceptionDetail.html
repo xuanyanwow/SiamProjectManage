@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>异常详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <script type="text/javascript" src="../lib/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="../lib/echarts/echarts.theme.js"></script>
+    <script type="text/javascript" src="../lib/echarts/world/js/china.js"></script>
+    <link rel="stylesheet" href="../css/oksub.css" media="all" />
+    <style>
+        #ab_class{
+            color:#1E9FFF;
+        }
+        #ab_file{
+            color: #2F96B4;
+        }
+        .layui-code{
+            border:1px solid #1E9FFF;
+            border-left-width: 3px;
+            line-height: 28px;
+            font-size:16px;
+        }
+        .light-code{
+            color: red;
+            font-weight: bolder;
+        }
+        .field_name{
+            width:150px;
+        }
+    </style>
+</head>
+
+<body class="ok-body-scroll console">
+    <div class="ok-body home">
+        <div class="layui-row" style="padding:15px">
+            <!-- 异常类和消息 -->
+            <!-- 文件资源 -->
+            <fieldset class="layui-elem-field">
+                <legend>
+                    <span id="ab_class">TestExceptionClass</span>
+                    in
+                    <a href="#" title="/www/test/File.php" id="ab_file">Connection.php</a>
+                    line
+                    <span id="ab_line"> 543 </span>
+                </legend>
+                <div class="layui-field-box">
+                    <!--异常消息-->
+                    <h2 id="ab_message">SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'o_sn' at row 1</h2>
+                    <!--代码块 如果有的话-->
+                    <pre class="layui-code"><code id="ab_filesoureces"></code></pre>
+                    <hr>
+                    <!--stack-->
+                    <h1>Call Stack</h1>
+                    <ul>
+                        <li>1.aaa</li>
+                        <li>2.333</li>
+                    </ul>
+                </div>
+            </fieldset>
+            <!-- 参数 -->
+            <fieldset class="layui-elem-field">
+                <legend>Param</legend>
+                <div class="layui-field-box">
+                    <fieldset class="layui-elem-field">
+                        <legend>GET</legend>
+                        <div class="layui-field-box">
+                            <table class="layui-table" lay-skin="nob" lay-size="sm">
+                                <tr>
+                                    <td class="field_name">key_1</td>
+                                    <td>value_1</td>
+                                </tr>
+                                <tr>
+                                    <td class="field_name">key_2</td>
+                                    <td>value_2</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="layui-elem-field">
+                        <legend>POST</legend>
+                        <div class="layui-field-box">
+                            <table class="layui-table" lay-skin="nob" lay-size="sm">
+                                <tr>
+                                    <td class="field_name">key_1</td>
+                                    <td>value_1</td>
+                                </tr>
+                                <tr>
+                                    <td class="field_name">key_2</td>
+                                    <td>value_2</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="../lib/layui/layui.js"></script>
+<script>
+    layui.use(['jquery'], function(){
+        var $ = layui.jquery;
+        $(function(){
+    let soureces = `function init(){
+    $scope.req.getArticle();
+    $('pre code').each(function(i, block) {
+        <span class="light-code">hljs.highlightBlock(block);</span>
+    });
+}`;
+            $("#ab_filesoureces").html(soureces);
+        });
+    });
+</script>
