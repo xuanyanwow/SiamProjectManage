@@ -56,12 +56,21 @@ class ApiLog extends Model
     public static function proportion()
     {
         $model = new static();
-        $res   = $model->field("api_full,count(id) as num")->group("api_full")->order("num", "DESC")->select()->toArray();
+        $res   = $model->field("api_full,count(id) as num,
+        sum(CASE WHEN is_success = 1 THEN 1 ELSE 0 END) AS success_times,
+        sum(CASE WHEN is_success = 0 THEN 1 ELSE 0 END) AS fail_times,
+        avg(consume_time) as avg_consume_time
+        ")->group("api_full")->order("num", "DESC")->select()->toArray();
 
         $total = array_sum(array_column($res, "num"));
 
         foreach ($res as $key => $value){
-            $res[$key]['proportion'] = bcdiv($value['num'], $total, 5) * 100;
+            $res[$key]['proportion'] = (bcdiv($value['num'], $total, 5) * 100)."%";
+            if ($value['success_times'] == 0){
+                $res[$key]['can_use'] = 0;
+            }else{
+                $res[$key]['can_use']    = (bcdiv($value['success_times'], $value['num'], 4) * 100)."%";
+            }
         }
 
         return $res;

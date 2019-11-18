@@ -123,16 +123,19 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
         table.render({
             elem: '#proportion'
             , height: 312
-            , width: 800
+            , width: 1000
             , url: url //数据接口
             , where:{
                 project_id : id
             }
             , page: false //开启分页
             , cols: [[ //表头
-                { field: 'api_full', title: '接口名'}
+                { field: 'api_full', title: '接口名',width:300}
                 , { field: 'num', title: '请求数'}
+                , { field: 'fail_times', title: '失败次数'}
+                , { field: 'avg_consume_time', title: '平均耗时(ms)'}
                 , { field: 'proportion', title: '占比'}
+                , { field: 'can_use', title: '可用性'}
             ]]
             , response: {
                 statusName: 'code' //规定数据状态的字段名称，默认：code
