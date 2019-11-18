@@ -22,53 +22,104 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
         return false;
     });
 
-    // 总览图表
-    var requestCurveOp = {
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line',
-            smooth: true
-        }]
-    };
+    var dateArray = [];
 
-    function requestCurve() {
-        var requestCurve = echarts.init($("#request-curve")[0], "theme");
+    function load_data()
+    {
+       okUtils.ajax("/api/api_log/overview", "post", {}, true).done(function (res) {
+           dateArray = res.data.date;
+           // 重组格式
+           let success_data = new Array(dateArray.length).fill(0);
+           let fail_data = new Array(dateArray.length).fill(0);
+           $.each(res.data.data, function(index,item){
+               let i = dateArray.indexOf(item.time);
+               if (i !== -1){
+                   success_data[i] = item.success_times;
+                   fail_data[i] = item.fail_times;
+               }
+           });
+           requestCurve(success_data);
+           errorCurve(fail_data);
+
+       }).fail(function (error) {
+           console.log(error);
+       })
+    }
+
+
+    // 总览图表
+
+    function requestCurve(data) {
+        let requestCurveOp = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                data: dateArray,
+            },
+            yAxis: {
+                type: 'value'
+            },
+            dataZoom: [
+                {
+                    type: 'slider',
+                    show: true,
+                    xAxisIndex: [0],
+                    start: 0,
+                    end: 7
+                }
+            ],
+            series: [{
+                data: data,
+                type: 'line',
+                smooth: true,
+                symbol: "none",
+            }]
+        };
+        let requestCurve = echarts.init($("#request-curve")[0], "theme");
         requestCurve.setOption(requestCurveOp);
         okUtils.echartsResize([requestCurve]);
     }
 
-    var errorCurveOp = {
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line',
-            smooth: true,
-            color:"red",
-        }],
-    };
 
-    function errorCurve() {
-        var errorCurve = echarts.init($("#error-curve")[0], "theme");
+    function errorCurve(data) {
+        let errorCurveOp = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                data: dateArray
+            },
+            yAxis: {
+                type: 'value'
+            },
+            dataZoom: [
+                {
+                    type: 'slider',
+                    show: true,
+                    xAxisIndex: [0],
+                    start: 0,
+                    end: 7
+                }
+            ],
+            series: [{
+                data: data,
+                type: 'line',
+                smooth: true,
+                color:"red",
+                symbol: "none",
+            }],
+        };
+        let errorCurve = echarts.init($("#error-curve")[0], "theme");
         errorCurve.setOption(errorCurveOp);
         okUtils.echartsResize([errorCurve]);
     }
 
     function proportion()
     {
-        let url = siamConfig.config('url') + "/api/abnormal/get_list";
+        let url = siamConfig.config('url') + "/api/api_log/proportion";
         table.render({
             elem: '#proportion'
             , height: 312
@@ -79,9 +130,9 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
             }
             , page: false //开启分页
             , cols: [[ //表头
-                { field: 'ab_id', title: '接口名'}
-                , { field: 'ab_class', title: '请求数'}
-                , { field: 'ab_message', title: '占比'}
+                { field: 'api_full', title: '接口名'}
+                , { field: 'num', title: '请求数'}
+                , { field: 'proportion', title: '占比'}
             ]]
             , response: {
                 statusName: 'code' //规定数据状态的字段名称，默认：code
@@ -107,8 +158,6 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
 
 
 
-
-    requestCurve();
-    errorCurve();
+    load_data();
     proportion();
 });
