@@ -27,9 +27,18 @@
             line-height: 28px;
             font-size:16px;
         }
+        .layui-code{
+            background-color: #fff!important;
+        }
         .light-code{
             color: red;
             font-weight: bolder;
+        }
+        .line-code{
+            display: inline-block;
+            width:40px;
+            border-right: 1px solid #57e1ff;
+            margin-right:10px;
         }
         .field_name{
             width:150px;
@@ -44,61 +53,28 @@
             <!-- 文件资源 -->
             <fieldset class="layui-elem-field">
                 <legend>
-                    <span id="ab_class">TestExceptionClass</span>
+                    <span id="ab_class"></span>
                     in
-                    <a href="#" title="/www/test/File.php" id="ab_file">Connection.php</a>
+                    <a href="#" title="" id="ab_file"></a>
                     line
-                    <span id="ab_line"> 543 </span>
+                    <span id="ab_line">  </span>
                 </legend>
                 <div class="layui-field-box">
                     <!--异常消息-->
-                    <h2 id="ab_message">SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'o_sn' at row 1</h2>
+                    <h2 id="ab_message"></h2>
                     <!--代码块 如果有的话-->
                     <pre class="layui-code"><code id="ab_filesoureces"></code></pre>
                     <hr>
                     <!--stack-->
                     <h1>Call Stack</h1>
-                    <ul>
-                        <li>1.aaa</li>
-                        <li>2.333</li>
+                    <ul id="ab_stack">
                     </ul>
                 </div>
             </fieldset>
             <!-- 参数 -->
             <fieldset class="layui-elem-field">
                 <legend>Param</legend>
-                <div class="layui-field-box">
-                    <fieldset class="layui-elem-field">
-                        <legend>GET</legend>
-                        <div class="layui-field-box">
-                            <table class="layui-table" lay-skin="nob" lay-size="sm">
-                                <tr>
-                                    <td class="field_name">key_1</td>
-                                    <td>value_1</td>
-                                </tr>
-                                <tr>
-                                    <td class="field_name">key_2</td>
-                                    <td>value_2</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </fieldset>
-
-                    <fieldset class="layui-elem-field">
-                        <legend>POST</legend>
-                        <div class="layui-field-box">
-                            <table class="layui-table" lay-skin="nob" lay-size="sm">
-                                <tr>
-                                    <td class="field_name">key_1</td>
-                                    <td>value_1</td>
-                                </tr>
-                                <tr>
-                                    <td class="field_name">key_2</td>
-                                    <td>value_2</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </fieldset>
+                <div class="layui-field-box" id="ab_param">
                 </div>
             </fieldset>
         </div>
@@ -107,17 +83,4 @@
 
 </html>
 <script type="text/javascript" src="../lib/layui/layui.js"></script>
-<script>
-    layui.use(['jquery'], function(){
-        var $ = layui.jquery;
-        $(function(){
-    let soureces = `function init(){
-    $scope.req.getArticle();
-    $('pre code').each(function(i, block) {
-        <span class="light-code">hljs.highlightBlock(block);</span>
-    });
-}`;
-            $("#ab_filesoureces").html(soureces);
-        });
-    });
-</script>
+<script type="text/javascript" src="../js/projectExceptionDetail.js"></script>

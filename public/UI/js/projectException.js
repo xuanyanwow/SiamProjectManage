@@ -114,7 +114,7 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfi
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
 
-        okLayer.open("异常详情", "projectExceptionDetail.html", "80%", "80%", function(layero){
+        okLayer.open("异常详情", `projectExceptionDetail.html?ab_id=${data.ab_id}`, "80%", "80%", function(layero){
         }, function(){
 
         });

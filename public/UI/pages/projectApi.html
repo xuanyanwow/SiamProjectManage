@@ -35,8 +35,27 @@
         </div>
 
         <div class="layui-row layui-col-space15" style="padding:15px;" id="list-bd">
-            <div class="layui-col-xs6 layui-col-md2">
-                API统计内容 额额额额额
+            <div class="layui-col-xs12 layui-col-md12">
+                <div class="layui-tab">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">总览</li>
+                        <li>详情</li>
+                    </ul>
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <!--请求数量曲线-->
+                            <h2>请求数量</h2>
+                            <div id="request-curve" style="height: 300px;"></div>
+                            <!--错误曲线-->
+                            <h2>错误数量</h2>
+                            <div id="error-curve"  style="height: 300px;"></div>
+                            <!--接口占用比例-->
+                            <h2>接口占比</h2>
+                            <div id="proportion"></div>
+                        </div>
+                        <div class="layui-tab-item">内容2</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

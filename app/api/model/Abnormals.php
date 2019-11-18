@@ -1,4 +1,5 @@
 <?php
+
 namespace app\api\model;
 
 
@@ -17,7 +18,6 @@ use think\Model;
  * @property $create_time 创建时间
  * @property $update_time 更新时间
  */
-
 class Abnormals extends Model
 {
     protected $autoWriteTimestamp = 'datetime';
@@ -25,9 +25,9 @@ class Abnormals extends Model
 
     public static function get_list($page = 1, $limit = 10, $project_id = NULL)
     {
-        if ($project_id !== NULL){
+        if ($project_id !== NULL) {
             $where[] = ['project_id', '=', $project_id];
-        }else{
+        } else {
             $where = [];
         }
         $list  = (new static)->where($where)->page($page, $limit)->field('ab_id, project_id, ab_class, ab_date, ab_message, create_time')->order("ab_id", 'DESC')->select();
@@ -35,7 +35,7 @@ class Abnormals extends Model
 
         return [
             'list'  => $list,
-            'count' => $count
+            'count' => $count,
         ];
     }
 
@@ -43,17 +43,18 @@ class Abnormals extends Model
     {
         $abnormal = (new static)->find($id);
 
-        $abnormal['ab_fileresources'] = !$abnormal['ab_fileresources'] ? [] : json_decode($abnormal['ab_fileresources'], true);
-        $abnormal['ab_data']          = !$abnormal['ab_data'] ? [] : json_decode($abnormal['ab_data'], true);
+        $abnormal['ab_fileresources'] = !$abnormal['ab_fileresources'] ? [] : json_decode($abnormal['ab_fileresources'], TRUE);
+        $abnormal['ab_stack']         = !$abnormal['ab_stack'] ? [] : json_decode($abnormal['ab_stack'], TRUE);
+        $abnormal['ab_data']          = !$abnormal['ab_data'] ? [] : json_decode($abnormal['ab_data'], TRUE);
 
         return $abnormal;
     }
 
     public static function getStaticByDate($date, $project_id = NULL)
     {
-        if ($project_id !== NULL){
+        if ($project_id !== NULL) {
             $where[] = ['project_id', '=', $project_id];
-        }else{
+        } else {
             $where = [];
         }
 
@@ -62,7 +63,7 @@ class Abnormals extends Model
 
         $temString = "{$dateArray[0]}-{$dateArray[1]}-";
 
-        if (strtotime($date) <= $thisMonth7){// 如果date 小于7号，则返回1~6号
+        if (strtotime($date) <= $thisMonth7) {// 如果date 小于7号，则返回1~6号
             $queryDate = [
                 $temString."01",
                 $temString."02",
@@ -70,11 +71,11 @@ class Abnormals extends Model
                 $temString."04",
                 $temString."05",
                 $temString."06",
-                $temString."07"
+                $temString."07",
             ];
-            $where[] = ['ab_date', 'in', $queryDate];
-        }else{// date 大于7号，则取前后3天 总共7天
-            $midDay = $dateArray[2];
+            $where[]   = ['ab_date', 'in', $queryDate];
+        } else {// date 大于7号，则取前后3天 总共7天
+            $midDay    = $dateArray[2];
             $queryDate = [
                 $temString.($midDay - 6),
                 $temString.($midDay - 5),
@@ -82,27 +83,27 @@ class Abnormals extends Model
                 $temString.($midDay - 3),
                 $temString.($midDay - 2),
                 $temString.($midDay - 1),
-                $temString.$midDay
+                $temString.$midDay,
             ];
-            $where[] = ['ab_date', 'in', $queryDate ];
+            $where[]   = ['ab_date', 'in', $queryDate];
         }
 
         $data = Abnormals::where($where)->field("ab_date, count(ab_id) as count")->group("ab_date")->select();
 
         $return = [];
-        foreach ($queryDate as $query){
+        foreach ($queryDate as $query) {
             $return[] = $query;
         }
-        foreach ($data as $one){
-            if ( ($index = array_search($one->ab_date, $return))  !== -1 ){
+        foreach ($data as $one) {
+            if (($index = array_search($one->ab_date, $return)) !== -1) {
                 $return[$index] = $one;
             }
         }
-        foreach ($return as $ke => $re){
-            if(is_string($re)){
+        foreach ($return as $ke => $re) {
+            if (is_string($re)) {
                 $return[$ke] = [
                     "ab_date" => $re,
-                    "count" => 0
+                    "count"   => 0,
                 ];
             }
         }
