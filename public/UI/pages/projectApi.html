@@ -19,6 +19,15 @@
             cursor: pointer;
             display: block;
         }
+        .api-lable{
+            width:150px;
+            margin-right: 15px;
+            font-weight: bolder;
+        }
+        .api_response_code{
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
     </style>
 </head>
 
@@ -36,7 +45,7 @@
 
         <div class="layui-row layui-col-space15" style="padding:15px;" id="list-bd">
             <div class="layui-col-xs12 layui-col-md12">
-                <div class="layui-tab">
+                <div class="layui-tab" lay-filter="api">
                     <ul class="layui-tab-title">
                         <li class="layui-this">总览</li>
                         <li>详情</li>
@@ -51,9 +60,131 @@
                             <div id="error-curve"  style="height: 300px;"></div>
                             <!--接口占用比例-->
                             <h2>接口占比</h2>
-                            <div id="proportion"></div>
+                            <div class="layui-row layui-col-space15">
+                                <div class="layui-col-xs12 layui-col-md6" >
+                                    <div id="proportion"></div>
+                                </div>
+                                <div class="layui-col-xs12 layui-col-md6">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-xs12 layui-col-md3">
+                                            <div class="layui-card">
+                                                <div class="ok-card-body">
+                                                    <div class="cart-r">
+                                                        <div class="stat-text incomes-num">15</div>
+                                                        <div class="stat-heading">5秒请求数</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-xs12 layui-col-md3">
+                                            <div class="layui-card ">
+                                                <div class="ok-card-body">
+                                                    <div class="cart-r">
+                                                        <div class="stat-text goods-num">3</div>
+                                                        <div class="stat-heading">平均QPS</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="layui-tab-item">内容2</div>
+
+
+                        <div class="layui-tab-item">
+                            <form class="layui-form" action="">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">来源</label>
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <select name="user_from" lay-verify="" lay-search>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">标识</label>
+                                        <div class="layui-input-inline" style="width: 200px;">
+                                            <input type="text" name="user_identify" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-inline">
+                                        <div class="layui-input-inline">
+                                            <button class="layui-btn" lay-submit lay-filter="api_detail">搜索</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <!--搜索结果-->
+                            <div class="api-detail-not-exists" style="display:none;">
+                                <span style="color:red">查询不到数据</span>
+                            </div>
+                            <div class="api-detail-result" style="display:none;">
+                                <div class="layui-row layui-col-space15">
+                                    <div class="layui-col-xs12 layui-col-md3">
+                                        <span class="api-lable">地址</span>
+                                        <span id="api_full"></span>
+                                    </div>
+                                    <div class="layui-col-xs12 layui-col-md3">
+                                        <span class="api-lable">耗时(ms)</span>
+                                        <span id="consume_time"></span>
+                                    </div>
+                                    <div class="layui-col-xs12 layui-col-md3">
+                                        <span class="api-lable">结果</span>
+                                        <span id="is_success"></span>
+                                    </div>
+                                    <div class="layui-col-xs12 layui-col-md3">
+                                        <span class="api-lable">时间</span>
+                                        <span id="create_time">2019-11-19 10:04:47</span>
+                                    </div>
+                                </div>
+                                <div class="layui-row layui-col-space15">
+                                    <div class="layui-col-md6 layui-col-xs12">
+                                        <span class="api-lable">请求参数</span>
+                                        <div id="api_param">
+                                            <table class="layui-table"  lay-size="sm" id="api_param_table">
+                                           </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-col-md6 layui-col-xs12">
+                                        <span class="api-lable">响应内容</span>
+                                        <div id="api_response">
+                                            <br>
+                                            <pre class="api_response_code">
+{
+    "code": 200,
+    "data": {
+        "list": [
+            {
+                "api_full": "Wechat/JSPAY",
+                "num": 18,
+                "success_times": "17",
+                "fail_times": "1",
+                "avg_consume_time": "52.1111",
+                "proportion": "90%",
+                "can_use": "94.44%"
+            },
+            {
+                "api_full": "Wechat/REFUND",
+                "num": 2,
+                "success_times": "1",
+                "fail_times": "1",
+                "avg_consume_time": "30.0000",
+                "proportion": "10%",
+                "can_use": "50%"
+            }
+        ],
+        "count": 2
+    },
+    "msg": "success"
+}</pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

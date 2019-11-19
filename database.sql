@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 18/11/2019 18:12:34
+ Date: 19/11/2019 12:00:34
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,9 @@ CREATE TABLE `siam_abnormals`  (
   `ab_message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '异常消息',
   `create_time` datetime(0) NOT NULL COMMENT '创建时间',
   `update_time` datetime(0) NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`ab_id`) USING BTREE
+  PRIMARY KEY (`ab_id`) USING BTREE,
+  INDEX `时间`(`create_time`, `update_time`) USING BTREE,
+  INDEX `项目`(`project_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -46,13 +48,18 @@ CREATE TABLE `siam_api_log`  (
   `api_full` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'api路径 = api类目.\"/\".api方法',
   `api_category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'api类目',
   `api_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'api方法',
+  `api_param` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL COMMENT 'api参数',
+  `api_response` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL COMMENT 'api响应',
   `is_success` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '成功|失败 1|0',
   `consume_time` int(10) NOT NULL COMMENT '消耗时间 单位ms',
   `user_from` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户来源，可以填入ip、城市名、调用账号等类型',
+  `user_identify` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '用户标识，比如可以用订单号，结合来源，就可以定位请求',
   `create_date` int(10) NOT NULL COMMENT '记录日期  YYYYddmm',
   `create_time` datetime(0) NOT NULL COMMENT '记录时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `用户搜索`(`user_from`, `user_identify`) USING BTREE,
+  INDEX `日期`(`create_date`, `create_time`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for siam_projects

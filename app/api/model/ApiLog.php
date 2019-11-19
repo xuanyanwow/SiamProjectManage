@@ -16,9 +16,12 @@ use think\Model;
  * @property $api_full api路径 = api类目.\"/\".api方法
  * @property $api_category api类目
  * @property $api_method api方法
+ * @property $api_param api参数
+ * @property $api_response api响应
  * @property $is_success 成功|失败 1|0
  * @property $consume_time 消耗时间 单位ms
  * @property $user_from 用户来源，可以填入ip、城市名、调用账号等类型
+ * @property $user_identify 用户标识，比如可以用订单号，结合来源，就可以定位请求
  * @property $create_date 记录日期  YYYYddmm
  * @property $create_time 记录时间
  */
@@ -28,16 +31,28 @@ class ApiLog extends Model
     protected $pk = 'id';
     protected $updateTime = false;
 
-    public static function report($category, $method, $consume_time, $is_success = 1, $user_from = '')
+    public static function report($data)
     {
-        $apiLog               = new static();
-        $apiLog->api_category = $category;
-        $apiLog->api_method   = $method;
-        $apiLog->api_full     = $category."/".$method;
-        $apiLog->consume_time = $consume_time;
-        $apiLog->is_success   = $is_success;
-        $apiLog->user_from    = $user_from;
-        $apiLog->create_date  = date("Ymd");
+        $category      = $data['category'];
+        $method        = $data['method'];
+        $consume_time  = $data['consume_time'];
+        $is_success    = $data['is_success'];
+        $user_from     = $data['user_from'] ?: '';
+        $user_idenfity = $data['user_identify'] ?: '';
+        $api_param     = $data['api_param'] ?: '';
+        $api_response  = $data['api_response'] ?: '';
+
+        $apiLog                = new static();
+        $apiLog->api_category  = $category;
+        $apiLog->api_method    = $method;
+        $apiLog->api_full      = $category."/".$method;
+        $apiLog->consume_time  = $consume_time;
+        $apiLog->is_success    = $is_success;
+        $apiLog->user_from     = $user_from;
+        $apiLog->create_date   = date("Ymd");
+        $apiLog->user_identify = $user_idenfity;
+        $apiLog->api_param     = $api_param;
+        $apiLog->api_response  = $api_response;
         $apiLog->save();
 
         return $apiLog;
@@ -49,7 +64,9 @@ class ApiLog extends Model
         $res = $data->field("DATE_FORMAT(`create_time`, '%H:%i') AS time, count(id) as num, 
         sum(CASE WHEN is_success = 1 THEN 1 ELSE 0 END) AS success_times,
         sum(CASE WHEN is_success = 0 THEN 1 ELSE 0 END) AS fail_times")
-            ->group("time")->order("time")->select()->toArray();
+            ->group("time")->order("time")
+            ->where("create_date", date("Ymd"))
+            ->select()->toArray();
         return $res;
     }
 
@@ -60,7 +77,9 @@ class ApiLog extends Model
         sum(CASE WHEN is_success = 1 THEN 1 ELSE 0 END) AS success_times,
         sum(CASE WHEN is_success = 0 THEN 1 ELSE 0 END) AS fail_times,
         avg(consume_time) as avg_consume_time
-        ")->group("api_full")->order("num", "DESC")->select()->toArray();
+        ")->group("api_full")->order("num", "DESC")
+            ->where("create_date", date("Ymd"))
+            ->select()->toArray();
 
         $total = array_sum(array_column($res, "num"));
 
@@ -74,5 +93,26 @@ class ApiLog extends Model
         }
 
         return $res;
+    }
+
+    public static function user_from_list()
+    {
+        $model = new static();
+        $res   = $model->field("user_from")->group("user_from")->select();
+        return $res;
+    }
+
+    public static function detail($input)
+    {
+        $detail = static::where("user_from", $input['user_from'])
+            ->where("user_identify", $input['user_identify'])
+            ->find();
+
+        if($detail){
+            $detail['api_param'] = json_decode($detail['api_param'], true);
+        }
+
+        return $detail;
+
     }
 }

@@ -1,5 +1,5 @@
 "use strict";
-layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamConfig'], function () {
+layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamConfig', 'form'], function () {
     var countUp = layui.countUp;
     var table = layui.table;
     var okUtils = layui.okUtils;
@@ -8,6 +8,7 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
     var okTab = layui.okTab();
     var element = layui.element;
     var siamConfig = layui.siamConfig;
+    var form = layui.form;
 
 
     var id   = getUrlParam("id");
@@ -123,7 +124,6 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
         table.render({
             elem: '#proportion'
             , height: 312
-            , width: 1000
             , url: url //数据接口
             , where:{
                 project_id : id
@@ -153,14 +153,94 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
             }
         });
     }
-
-    // 详情表格
+    function user_from_list()
+    {
+        okUtils.ajax("/api/api_log/user_from_list", "post", {}, true).done(function (res) {
+            // 渲染选择列表
+            let dom = $("select[name=user_from]");
+            dom.empty();
+            $.each(res.data.list, function(index, item){
+                dom.append(`<option value='${item.user_from}'>${item.user_from}</option>`);
+            });
+            form.render();
+        }).fail(function (error) {
+            console.log(error);
+        })
+    }
 
 
     // 点击详情
 
+    element.on('tab(api)', function(data){
+        switch (data.index) {
+            case 0:
+                load_data();
+                proportion();
+                break;
+            case 1:
+                break;
+            case 2:
+                break
+        }
+    });
+    form.on("submit(api_detail)", function(data){
+        if (data.field.user_from === ''){
+            layer.msg("请选择来源"); return false;
+        }
+        if (data.field.user_identify.length === 0){
+            layer.msg("请填写标识");return false;
+        }
+        okUtils.ajax("/api/api_log/detail", "post", data.field, true).done(function (res) {
+           // 渲染响应结果
+            render_detail(res.data);
+        }).fail(function (error) {
+            console.log(error);
+        });
+        return false;
+    });
 
+    function render_detail(data){
+        let not_exists_dom = $(".api-detail-not-exists");
+        let result_dom = $(".api-detail-result");
+        let api_full_dom = $("#api_full");
+        let consume_time_dom = $("#consume_time");
+        let is_success_dom = $("#is_success");
+        let create_time_dom = $("#create_time");
+        let api_param_table_dom = $("#api_param_table");
+        let api_response_code_dom = $(".api_response_code");
+
+
+        not_exists_dom.css("display", "none");
+        result_dom.css("display", "none");
+        if (data===null || data.length === 0 ){
+            not_exists_dom.css("display", "block");
+            return true;
+        }else{
+            result_dom.css("display", "block");
+        }
+
+        api_full_dom.html(data.api_full);
+        consume_time_dom.html(data.consume_time);
+        is_success_dom.html(data.is_success == 1 ? "成功" : "<span style='color:red'>失败</span>");
+        create_time_dom.html(data.create_time);
+        api_param_table_dom.empty();
+        $.each(data.api_param, function(index, item){
+            api_param_table_dom.append(`<tr><td class="field_name">${index}</td><td>${item}</td></tr>`)
+        });
+
+        api_response_code_dom.html(HTMLEncode(data.api_response));
+    }
+
+    function HTMLEncode(html) {
+        var temp = document.createElement("div");
+        (temp.textContent != null) ? (temp.textContent = html) : (temp.innerText = html);
+        var output = temp.innerHTML;
+        temp = null;
+        return output;
+    }
 
     load_data();
     proportion();
+    // 搜索分组加载
+    user_from_list();
 });

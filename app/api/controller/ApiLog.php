@@ -22,7 +22,7 @@ class ApiLog extends BaseController
             "consume_time" => 'require',
         ]);
 
-        $apiLog = Model::report(input('category'), input('method'), input('consume_time'), input('is_success', 1), input('user_from', ''));
+        $apiLog = Model::report(input());
 
         return json([
             'code' => 200,
@@ -57,6 +57,35 @@ class ApiLog extends BaseController
                 'list' => $data,
                 'count' => count($data),
             ],
+            'msg'  => 'success'
+        ]);
+    }
+
+    public function user_from_list()
+    {
+        $data = Model::user_from_list();
+
+        return json([
+            'code' => 200,
+            'data' => [
+                'list' => $data,
+                'count' => count($data),
+            ],
+            'msg'  => 'success'
+        ]);
+    }
+
+    public function detail()
+    {
+        $this->validate(input(), [
+            "user_from"     => 'require',
+            "user_identify" => 'require',
+        ]);
+
+        $detail = Model::detail(input());
+        return json([
+            'code' => 200,
+            'data' => $detail,
             'msg'  => 'success'
         ]);
     }
