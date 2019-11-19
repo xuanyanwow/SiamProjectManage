@@ -35,12 +35,14 @@ class ApiLog extends BaseController
     {
         $date = $this->initDateArray();
         $data = Model::getOverview();
+        $qps  = Model::getQpsInfo();
 
         return json([
             'code' => 200,
             'data' => [
                 'date' => $date,
                 'data' => $data,
+                'qps'  => $qps,
             ],
             'msg'  => 'success'
         ]);

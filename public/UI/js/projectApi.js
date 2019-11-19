@@ -42,9 +42,16 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
            requestCurve(success_data);
            errorCurve(fail_data);
 
+           let qps_data = res.data.qps;
+           render_qps(qps_data);
        }).fail(function (error) {
            console.log(error);
        })
+    }
+
+    function render_qps(data){
+        $("#second_num").html(data.count);
+        $("#avg_qps").html(data.qps);
     }
 
 

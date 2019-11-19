@@ -115,4 +115,20 @@ class ApiLog extends Model
         return $detail;
 
     }
+
+    /**
+     * 查询周期内平均qps
+     */
+    public static function getQpsInfo($second = 5)
+    {
+        $start_time = date("Y-m-d H:i:s", time() - $second);
+        $end_time   = date("Y-m-d H:i:s");
+
+        $count = static::where('create_time', 'between', [$start_time, $end_time])->count();
+        $qps   = bcdiv($count, $second, 2);
+        return [
+            'count' => $count,
+            'qps'   => $qps,
+        ];
+    }
 }
