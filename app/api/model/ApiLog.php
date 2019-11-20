@@ -36,11 +36,11 @@ class ApiLog extends Model
         $category      = $data['category'];
         $method        = $data['method'];
         $consume_time  = $data['consume_time'];
-        $is_success    = $data['is_success'];
-        $user_from     = $data['user_from'] ?: '';
-        $user_idenfity = $data['user_identify'] ?: '';
-        $api_param     = $data['api_param'] ?: '';
-        $api_response  = $data['api_response'] ?: '';
+        $is_success    = $data['is_success']?? 1;
+        $user_from     = $data['user_from'] ?? '';
+        $user_idenfity = $data['user_identify'] ?? '';
+        $api_param     = $data['api_param'] ?? '';
+        $api_response  = $data['api_response'] ?? '';
 
         $apiLog                = new static();
         $apiLog->api_category  = $category;

@@ -16,7 +16,7 @@ class ApiLog extends BaseController
 {
     public function report()
     {
-        $this->validate(input(), [
+        $res = $this->validate(input(), [
             "category"     => 'require',
             "method"       => 'require',
             "consume_time" => 'require',
