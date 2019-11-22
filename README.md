@@ -1,52 +1,40 @@
-ThinkPHP 6.0
+Siam Project Manage
 ===============
 
-> 运行环境要求PHP7.1+。
+致敬其他开源项目
 
-## 主要新特性
+- Thinkphp 6.0
+- ok-admin UI
+- guzzle
 
-* 采用`PHP7`强类型（严格模式）
-* 支持更多的`PSR`规范
-* 原生多应用支持
-* 更强大和易用的查询
-* 全新的事件系统
-* 模型事件和数据库事件统一纳入事件系统
-* 模板引擎分离出核心
-* 内部功能中间件化
-* SESSION/Cookie机制改进
-* 对Swoole以及协程支持改进
-* 对IDE更加友好
-* 统一和精简大量用法
+等等
 
-## 安装
+# 功能介绍
 
-~~~
-composer create-project topthink/think tp 6.0.*-dev
-~~~
+SPM，自己工作过程中需求，顺便整理开源，作为一个中间统计平台，可以快速分析API频率、可用性等；记录程序异常参数和原因、快速复原崩溃过程、定位程序bug；管理项目事务（任务安排、规划）；日志储存，使用唯一标识储存（如订单号）、指定查询。
 
-如果需要更新框架使用
-~~~
-composer update topthink/framework
-~~~
+个人负责项目较多，每个项目都写一遍这些模块有点累人，于是写了这个统计平台。
 
-## 文档
+其他项目通过HTTP、UDP、直连数据库等方式上报数据，日常管理只需要从SPM平台查看数据。
 
-[完全开发手册](https://www.kancloud.cn/manual/thinkphp6_0/content)
+# 截图预览
 
-## 参与开发
+![项目列表](./public/UI/images/1.jpg)
 
-请参阅 [ThinkPHP 核心框架包](https://github.com/top-think/framework)。
+![项目功能](./public/UI/images/2.jpg)
 
-## 版权信息
+![API统计](./public/UI/images/3.jpg)
 
-ThinkPHP遵循Apache2开源协议发布，并提供免费使用。
+![异常统计](./public/UI/images/4.jpg)
 
-本项目包含的第三方源码和二进制文件之版权信息另行标注。
+其他待完成...
 
-版权所有Copyright © 2006-2019 by ThinkPHP (http://thinkphp.cn)
+# 安装
 
-All rights reserved。
-
-ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
-
-更多细节参阅 [LICENSE.txt](LICENSE.txt)
+- clone 此git仓库到本地，php环境指向public目录，Thinkphp6.0(建议先看框架文档)
+- 前端页面为 ```www.root.com/UI/index.html```
+- 修改前端配置文件 ```/UI/lib/layui/lay/okmodules/siamConfig.js```文件
+- - url  api 路径  为以上部署域名指定 ```www.root.com/index.php```
+- - isFrontendBackendSeparate 是否前后分离 默认true
+- 导入根目录/database.sql到mysql数据库中
+- 修改Thinkphp程序数据库配置文件   copy根目录的.example.env  命名为.env 并且修改其中的配置项
