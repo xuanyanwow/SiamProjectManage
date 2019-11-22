@@ -38,3 +38,4 @@ SPM，自己工作过程中需求，顺便整理开源，作为一个中间统�
 - - isFrontendBackendSeparate 是否前后分离 默认true
 - 导入根目录/database.sql到mysql数据库中
 - 修改Thinkphp程序数据库配置文件   copy根目录的.example.env  命名为.env 并且修改其中的配置项
+- 运行`composer install` 安装php组件依赖（建议切换国内镜像安装，速度比较快）
