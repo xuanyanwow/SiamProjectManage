@@ -14,6 +14,7 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab'], function () {
     $("#project-title").html("项目详情 - " + name);
     $("#chooseApi").attr('href', `projectApi.html?id=${id}&name=${name}`);
     $("#chooseException").attr('href', `projectException.html?id=${id}&name=${name}`);
+    $("#chooseLogn").attr('href', `projectLog.html?id=${id}&name=${name}`);
 });
 
 
