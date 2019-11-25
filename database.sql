@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 19/11/2019 12:00:34
+ Date: 25/11/2019 18:16:22
 */
 
 SET NAMES utf8mb4;
@@ -37,7 +37,7 @@ CREATE TABLE `siam_abnormals`  (
   PRIMARY KEY (`ab_id`) USING BTREE,
   INDEX `时间`(`create_time`, `update_time`) USING BTREE,
   INDEX `项目`(`project_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for siam_api_log
@@ -45,6 +45,7 @@ CREATE TABLE `siam_abnormals`  (
 DROP TABLE IF EXISTS `siam_api_log`;
 CREATE TABLE `siam_api_log`  (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL COMMENT '所属项目id',
   `api_full` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'api路径 = api类目.\"/\".api方法',
   `api_category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'api类目',
   `api_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'api方法',
@@ -59,7 +60,24 @@ CREATE TABLE `siam_api_log`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `用户搜索`(`user_from`, `user_identify`) USING BTREE,
   INDEX `日期`(`create_date`, `create_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 75 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for siam_logs
+-- ----------------------------
+DROP TABLE IF EXISTS `siam_logs`;
+CREATE TABLE `siam_logs`  (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `log_category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '日志分类',
+  `log_point` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '日志点',
+  `log_sn` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '日志标识单号',
+  `log_data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '日志内容',
+  `log_from` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '日志来源',
+  `create_at` datetime(0) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `sn`(`project_id`, `log_sn`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for siam_projects
