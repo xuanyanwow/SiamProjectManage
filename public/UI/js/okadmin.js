@@ -228,27 +228,27 @@ layui.use(["element", "layer", "okUtils", "okTab", "okLayer", "jQContextMenu"], 
 
   function noticeFun() {
     var srcWidth = okUtils.getBodyWidth();
-    layer.open({
-      type: 0, title: "系统公告", btn: "我知道啦", btnAlign: 'c', content: getContent(),
-      yes: function (index) {
-        if (srcWidth > 800) {
-          layer.tips('公告跑到这里去啦', '#notice', {
-            tips: [1, '#000'],
-            time: 2000
-          });
-        }
-        sessionStorage.setItem("notice", "true");
-        layer.close(index);
-      },
-      cancel: function (index) {
-        if (srcWidth > 800) {
-          layer.tips('公告跑到这里去啦', '#notice', {
-            tips: [1, '#000'],
-            time: 2000
-          });
-        }
-      }
-    });
+    // layer.open({
+    //   type: 0, title: "系统公告", btn: "我知道啦", btnAlign: 'c', content: getContent(),
+    //   yes: function (index) {
+    //     if (srcWidth > 800) {
+    //       layer.tips('公告跑到这里去啦', '#notice', {
+    //         tips: [1, '#000'],
+    //         time: 2000
+    //       });
+    //     }
+    //     sessionStorage.setItem("notice", "true");
+    //     layer.close(index);
+    //   },
+    //   cancel: function (index) {
+    //     if (srcWidth > 800) {
+    //       layer.tips('公告跑到这里去啦', '#notice', {
+    //         tips: [1, '#000'],
+    //         time: 2000
+    //       });
+    //     }
+    //   }
+    // });
   }
 
   function getContent() {
@@ -303,46 +303,6 @@ layui.use(["element", "layer", "okUtils", "okTab", "okLayer", "jQContextMenu"], 
     return content;
   }
 
-  /**
-   * 捐赠作者
-   */
-  $(".layui-footer button.donate").click(function () {
-    layer.tab({
-      area: ["330px", "350px"],
-      tab: [{
-        title: "支付宝",
-        content: "<img src='images/zfb.jpg' width='200' height='300' style='margin: 0 auto; display: block;'>"
-      }, {
-        title: "微信",
-        content: "<img src='images/wx.jpg' width='200' height='300' style='margin: 0 auto; display: block;'>"
-      }]
-    });
-  });
-
-  /**
-   * QQ群交流
-   */
-  $("body").on("click", ".layui-footer button.communication, #noticeQQ", function () {
-    layer.tab({
-      area: ["auto", "370px"],
-      tab: [{
-        title: "QQ群2",
-        content: "<img src='images/qq2.png' width='200' height='300' style='margin: 0 auto; display: block;'/>"
-      }, {
-        title: "QQ群1（已满）",
-        content: "<img src='images/qq1.png' width='200' height='300' style='margin: 0 auto; display: block;'/>"
-      }]
-    });
-  });
-
-  /**
-   * 弹窗皮肤
-   */
-  $("#alertSkin").click(function () {
-    okLayer.open("皮肤动画", "pages/system/alertSkin.html", "50%", "45%", function (layero) {
-    }, function () {
-    });
-  });
 
   /**
    * 退出操作

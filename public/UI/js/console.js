@@ -11,12 +11,18 @@ layui.use(["okUtils", "table", "countUp", "okMock"], function () {
      */
     function statText() {
         var elem_nums = $(".stat-text");
-        elem_nums.each(function (i, j) {
-            var ran = parseInt(123);
-            !new countUp({
-                target: j,
-                endVal: ran
-            }).start();
+
+        let data = [];
+        okUtils.ajax("/api/console/get_data", "post", {}, true).done(function(res){
+            data = res.data.min;
+            elem_nums.each(function (i, j) {
+                !new countUp({
+                    target: j,
+                    endVal: data[i]
+                }).start();
+            });
+        }).fail(function (error){
+            console.log(error);
         });
     }
 
@@ -45,7 +51,7 @@ layui.use(["okUtils", "table", "countUp", "okMock"], function () {
     }
 
     statText();
-    userSource();
+    // userSource();
 });
 
 
