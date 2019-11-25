@@ -61,7 +61,7 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'table', 'siamConfi
 
     // 渲染代码资源
     function renderCode(fileresources){
-        if (fileresources.length>1){
+        if (fileresources.length>=1){
             $.each(fileresources, function(index, item){
                 let html = "";
                 if (item.is_hight){
