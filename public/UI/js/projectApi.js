@@ -27,7 +27,9 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
 
     function load_data()
     {
-       okUtils.ajax("/api/api_log/overview", "post", {}, true).done(function (res) {
+       okUtils.ajax("/api/api_log/overview", "post", {
+           project_id:id
+       }, true).done(function (res) {
            dateArray = res.data.date;
            // 重组格式
            let success_data = new Array(dateArray.length).fill(0);
@@ -162,7 +164,9 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
     }
     function user_from_list()
     {
-        okUtils.ajax("/api/api_log/user_from_list", "post", {}, true).done(function (res) {
+        okUtils.ajax("/api/api_log/user_from_list", "post", {
+            project_id :id
+        }, true).done(function (res) {
             // 渲染选择列表
             let dom = $("select[name=user_from]");
             dom.empty();
@@ -197,6 +201,7 @@ layui.use(["okUtils", "table", "countUp", "okMock", 'okTab', 'element', 'siamCon
         if (data.field.user_identify.length === 0){
             layer.msg("请填写标识");return false;
         }
+        data.field.project_id = id;
         okUtils.ajax("/api/api_log/detail", "post", data.field, true).done(function (res) {
            // 渲染响应结果
             render_detail(res.data);

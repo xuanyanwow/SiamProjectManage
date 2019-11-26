@@ -58,27 +58,47 @@ class ApiLog extends Model
         return $apiLog;
     }
 
-    public static function getOverview()
+    public static function getOverview($project_id = null, $date = null)
     {
+        $where = [];
+        if ($project_id !==null) {
+            $where[] = ['project_id', '=', $project_id];
+        }
+        if ($date === NULL){
+            $date = date("Ymd");
+        }
+
+        $where[] = ['create_date', '=', (int)$date];
+
         $data = new static();
         $res = $data->field("DATE_FORMAT(`create_time`, '%H:%i') AS time, count(id) as num, 
         sum(CASE WHEN is_success = 1 THEN 1 ELSE 0 END) AS success_times,
         sum(CASE WHEN is_success = 0 THEN 1 ELSE 0 END) AS fail_times")
             ->group("time")->order("time")
-            ->where("create_date", date("Ymd"))
+            ->where($where)
             ->select()->toArray();
         return $res;
     }
 
-    public static function proportion()
+    public static function proportion($project_id = null, $date = null)
     {
+        $where = [];
+        if ($project_id !==null) {
+            $where[] = ['project_id', '=', $project_id];
+        }
+        if ($date === NULL){
+            $date = date("Ymd");
+        }
+
+        $where[] = ['create_date', '=', (int)$date];
+
         $model = new static();
         $res   = $model->field("api_full,count(id) as num,
         sum(CASE WHEN is_success = 1 THEN 1 ELSE 0 END) AS success_times,
         sum(CASE WHEN is_success = 0 THEN 1 ELSE 0 END) AS fail_times,
         avg(consume_time) as avg_consume_time
         ")->group("api_full")->order("num", "DESC")
-            ->where("create_date", date("Ymd"))
+            ->where($where)
             ->select()->toArray();
 
         $total = array_sum(array_column($res, "num"));
@@ -95,10 +115,14 @@ class ApiLog extends Model
         return $res;
     }
 
-    public static function user_from_list()
+    public static function user_from_list($project_id)
     {
+        $where = [
+            ['project_id', '=', $project_id]
+        ];
+
         $model = new static();
-        $res   = $model->field("user_from")->group("user_from")->select();
+        $res   = $model->field("user_from")->where($where)->group("user_from")->select();
         return $res;
     }
 
@@ -106,6 +130,7 @@ class ApiLog extends Model
     {
         $detail = static::where("user_from", $input['user_from'])
             ->where("user_identify", $input['user_identify'])
+            ->where('project_id', $input['project_id'])
             ->find();
 
         if($detail){
@@ -118,13 +143,18 @@ class ApiLog extends Model
 
     /**
      * 查询周期内平均qps
+     * @param int $second
+     * @param $project_id
+     * @return array
      */
-    public static function getQpsInfo($second = 5)
+    public static function getQpsInfo($second = 5, $project_id)
     {
         $start_time = date("Y-m-d H:i:s", time() - $second);
         $end_time   = date("Y-m-d H:i:s");
 
-        $count = static::where('create_time', 'between', [$start_time, $end_time])->count();
+        $count = static::where('create_time', 'between', [$start_time, $end_time])
+            ->where('project_id', $project_id)
+            ->count();
         $qps   = bcdiv($count, $second, 2);
         return [
             'count' => $count,

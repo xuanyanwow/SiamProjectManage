@@ -8,7 +8,6 @@
 
 namespace app\api\controller;
 
-use app\api\bean\ApiLogBean;
 use app\api\model\ApiLog as Model;
 use app\BaseController;
 
@@ -16,7 +15,7 @@ class ApiLog extends BaseController
 {
     public function report()
     {
-        $res = $this->validate(input(), [
+        $this->validate(input(), [
             "category"     => 'require',
             "method"       => 'require',
             "consume_time" => 'require',
@@ -34,8 +33,8 @@ class ApiLog extends BaseController
     public function overview()
     {
         $date = $this->initDateArray();
-        $data = Model::getOverview();
-        $qps  = Model::getQpsInfo();
+        $data = Model::getOverview(input('project_id'), input('create_date', null));
+        $qps  = Model::getQpsInfo(5, input('project_id'));
 
         return json([
             'code' => 200,
@@ -51,7 +50,7 @@ class ApiLog extends BaseController
 
     public function proportion()
     {
-        $data = Model::proportion();
+        $data = Model::proportion(input('project_id'));
 
         return json([
             'code' => 200,
@@ -65,7 +64,11 @@ class ApiLog extends BaseController
 
     public function user_from_list()
     {
-        $data = Model::user_from_list();
+        $this->validate(input(), [
+            "project_id"    => 'require',
+        ]);
+
+        $data = Model::user_from_list(input('project_id'));
 
         return json([
             'code' => 200,
@@ -82,6 +85,7 @@ class ApiLog extends BaseController
         $this->validate(input(), [
             "user_from"     => 'require',
             "user_identify" => 'require',
+            "project_id"    => 'require',
         ]);
 
         $detail = Model::detail(input());
