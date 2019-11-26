@@ -13,11 +13,16 @@
     <script type="text/javascript" src="../lib/echarts/echarts.min.js"></script>
     <script type="text/javascript" src="../lib/echarts/echarts.theme.js"></script>
     <script type="text/javascript" src="../lib/echarts/world/js/china.js"></script>
+
     <link rel="stylesheet" href="../css/oksub.css" media="all" />
+    <link rel="stylesheet" href="../css/jquery.jsonview.css" media="all" />
     <style>
         .project-one {
             cursor: pointer;
             display: block;
+        }
+        .detail-bd{
+            display:none;
         }
     </style>
 </head>
@@ -49,19 +54,34 @@
                                 <button class="layui-btn" lay-submit lay-filter="logs">搜索</button>
                             </div>
                         </div>
+                        <table class="layui-table">
+                            <thead>
+                            <tr>
+                                <th>类目</th>
+                                <th>日志点</th>
+                                <th>订单号</th>
+                                <th>日志来源</th>
+                                <th>日志时间</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            </tbody>
+                        </table>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </body>
-
+<div id="test"></div>
 
 </html>
 
 <script type="text/html" id="exceptionDo">
     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="detail">查看</a>
 </script>
-
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="../lib/layui/layui.js"></script>
+<script type="text/javascript" src="../js/jquery.jsonview.min.js"></script>
 <script type="text/javascript" src="../js/projectLog.js"></script>
