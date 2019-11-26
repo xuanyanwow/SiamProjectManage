@@ -27,4 +27,24 @@ class Logs extends BaseController
             'msg'  => 'success'
         ]);
     }
+
+    public function report()
+    {
+        $this->validate(input(), [
+            "project_id"   => 'require',
+            "log_sn"       => 'require',
+            "log_category" => 'require',
+            "log_point"    => 'require',
+            "log_data"     => 'require',
+            "log_from"     => 'require',
+        ]);
+
+        $res = \app\api\model\Logs::report(input());
+
+        return json([
+            'code' => 200,
+            'data' => [],
+            'msg'  => 'success'
+        ]);
+    }
 }
