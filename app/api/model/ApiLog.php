@@ -14,6 +14,7 @@ use think\Model;
 /**
  * @property $id
  * @property $api_full api路径 = api类目.\"/\".api方法
+ * @property $project_id 项目id
  * @property $api_category api类目
  * @property $api_method api方法
  * @property $api_param api参数
@@ -41,6 +42,7 @@ class ApiLog extends Model
         $user_idenfity = $data['user_identify'] ?? '';
         $api_param     = $data['api_param'] ?? '';
         $api_response  = $data['api_response'] ?? '';
+        $project_id    = $data['project_id'];
 
         $apiLog                = new static();
         $apiLog->api_category  = $category;
@@ -53,6 +55,7 @@ class ApiLog extends Model
         $apiLog->user_identify = $user_idenfity;
         $apiLog->api_param     = $api_param;
         $apiLog->api_response  = $api_response;
+        $apiLog->project_id    = $project_id;
         $apiLog->save();
 
         return $apiLog;
