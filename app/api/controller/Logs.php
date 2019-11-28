@@ -47,4 +47,22 @@ class Logs extends BaseController
             'msg'  => 'success'
         ]);
     }
+
+    public function lazy_report()
+    {
+        $this->validate(input(), [
+            "json"   => 'require',
+        ]);
+
+        $array = json_decode(input('json'), true);
+        foreach ($array as $on){
+            \app\api\model\Logs::report($on);
+        }
+
+        return json([
+            'code' => 200,
+            'data' => [],
+            'msg'  => 'success'
+        ]);
+    }
 }
